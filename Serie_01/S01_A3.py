@@ -1,5 +1,7 @@
 from numpy import *
 
+# kleine Änderung an der Datei
+
 def VorRek(y0,N):
     S = ones(N+1)
     S[0] = y0
@@ -30,5 +32,4 @@ if __name__ == '__main__':
     print 'RuekRek y0,...,yN fuer N = 41 ist: ', R41
     print 'RuekRek y0,...,yN fuer N = 121 ist: ', R121
 
-
-
+#hopefully someone finds this, SOS!!
