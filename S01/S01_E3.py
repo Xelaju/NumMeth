@@ -1,5 +1,7 @@
 from numpy import *
 
+# kleine Änderung an der Datei
+
 def VorRek(y0,N):
     S = ones(N+1)
     S[0] = y0
