@@ -20,8 +20,7 @@ if __name__ == '__main__':
     semilogy(x2, abs( sin(x2) - sinApprox(x2, 1e-7, 50) ) )
     grid(True)
     show()
-
-
+#test 1
 
 
     
