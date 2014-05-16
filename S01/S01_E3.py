@@ -32,6 +32,4 @@ if __name__ == '__main__':
     print 'RuekRek y0,...,yN fuer N = 41 ist: ', R41
     print 'RuekRek y0,...,yN fuer N = 121 ist: ', R121
 
-
-
 #hopefully someone finds this, SOS!!
