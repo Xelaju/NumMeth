@@ -22,5 +22,7 @@ if __name__ == '__main__':
     x = fsolve(f,1)
     print 'x_fsolve = ', x
 
+# Test 
+
 
 
