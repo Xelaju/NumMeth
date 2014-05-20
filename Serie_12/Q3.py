@@ -63,7 +63,6 @@ def iE(f, y0, T, N, flag=False):
 	else:
 		return t, r
 
-
 # implicit mid-point method
 def iM(f, y0, T, N, flag=False):
 	""" f     -> is the function that returns the derivative of the argument 
@@ -101,7 +100,7 @@ def SV(y0, T, N, G=6.67300*1e-11, M=5.9722*1e24):
 	f = lambda r: - M*G/norm(r)**3 * r
 
 	for i in xrange(int(N)):
-		y[:,i+1] = y[:,i] + h * v[:,i] + h**2 * f(y[:,0]) / 2
+		y[:,i+1] = y[:,i] + h * v[:,i] + h**2 * f(y[:,i]) / 2 # Boeser Fehler
 		v[:,i+1] = v[:,i] + h * (f(y[:,i]) + f(y[:,i+1])) / 2
 
 	return t, vstack((y,v))
