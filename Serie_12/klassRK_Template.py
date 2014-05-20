@@ -35,19 +35,39 @@ def klassRK(f, y0, T, N):
         # y[:,i+1] =                                    #
         #                                               #
         #################################################
-        pass
+        y[:,i+1] = rkStep(f, y[:,i], t[i], h) 
 
     return t, y
 
 
 def rkStep(f, y0, t0, h):
     # Berechnet einen RK-Schritt der Schrittweite h
-    y1 = zeros_like(y0)
 
     ###########################################################
     #                                                         #
     # Implementiere einen einzelnen Runge-Kutta Schritt hier. #
     #                                                         #
     ###########################################################
+    K1 = f(t0, y0)
+    K2 = f(t0 + h/2, y0 + h * K1 / 2)
+    K3 = f(t0 + h/2, y0 + h * K2 / 2)
+    K4 = f(t0 + h, y0 + h * K3)
 
-    return y1
+    return y0 + h * (K1/6 + K2/3 + K3/3 + K4/6)
+
+if __name__ == '__main__':
+
+    from numpy import array, dot, exp, cos, shape
+
+    A = array([[0,1],[-101,-2]])
+    f = lambda t, y: dot(A,y)
+
+    y0 = array([1,-1])
+    T = array([0,3])
+
+    t, y = klassRK(f, y0, T, 10000)
+
+    print shape(y)
+
+    print 'Approximative Loesung mit klass. Runge-Kutta: y(3) = ', y[0,-1]
+    print 'Refenrenzloesung: y(3) = ', exp(-3) * cos(10 * 3)
