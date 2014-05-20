@@ -1,7 +1,7 @@
 from numpy import array, sin, pi, shape
 import matplotlib.pyplot as plt
 from ode45 import ode45
-import scipy.optimize
+from scipy.optimize import *
 
 
 def PendulumODE(y, l, g):
@@ -16,11 +16,14 @@ def IntegratePendulum(phi0, tEnd=1.8, l=0.6, g=9.81, flag=False):
     flag == true    -->  y = phi(tEnd)
     (order of the 2 outputs reversed wrt the usual to use fzero)
     """
-    ######################################
-    #                                    #
-    # use ode45 to integrate PendulumODE #
-    #                                    #
-    ######################################
+    if shape(phi0)==(1,): phi0 = phi0[0]
+    y0 = array([phi0 , 0])
+    tspan= (0, tEnd)
+    t ,y = ode45(lambda t,y: PendulumODE(y,l,g), tspan, y0)
+    if flag: 
+        return y[-1][0]
+    else:
+        return (y,t)
 
 
 if __name__ == '__main__':
@@ -31,7 +34,7 @@ if __name__ == '__main__':
     tEnd = 1.8
     l = 0.6
     g = 9.81
-
+    phiT=0
     # solve ODE for extreme values to check the period length:
     a1 = 0.8
     y1, t1 = IntegratePendulum(a1 * pi * 0.5, tEnd, l, g, False)
@@ -49,15 +52,15 @@ if __name__ == '__main__':
     plt.legend(loc='upper left')
     plt.grid(True)
 
+
     # zero finding:
+    def f(phi):
+        return IntegratePendulum(phi, 0.45 , 0.6 , 9.81 ,True)
+    
+    phiT=fsolve(f,0.9*pi*0.5)
+    
 
-    ##########################################################
-    #                                                        #
-    # use scipy.optimize.fmin to find initial value for tEnd #
-    #                                                        #
-    ##########################################################
-
-    # compute complete solution with period = tEnd for plotting
+    #compute complete solution with period = tEnd for plotting
     y3, t3 = IntegratePendulum(phiT, tEnd, l, g, False)
     y3 = y3.transpose()
 
