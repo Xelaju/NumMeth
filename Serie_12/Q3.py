@@ -29,7 +29,7 @@ def eE(f, y0, T, N, flag=False):
 	"""
 
 	T = T *60*60*24    #changing the units of days to seconds for the interval
-	t,h = linspace(0, T, N+1, retstep=True)
+	t,h = linspace(T[0], T[1], N+1, retstep=True)
 	y = zeros(( 4 , size(t) ))
 	y[:, 0]= y0 # r sieht fuer mich zu sehr nach Radius aus ^
 
@@ -51,7 +51,7 @@ def iE(f, y0, T, N, flag=False):
 		 	  -> True  returns only the last point evaluated
 	"""
 	T= T *60*60*24    #changing the units of days to seconds for the interval
-	t,h =linspace(0, T, N+1, retstep=True)
+	t,h =linspace(T[0], T[1], N+1, retstep=True)
 	r=zeros(( 4 , size(t) ))
 	r[:, 0]= y0
 	for i in xrange(N):
@@ -73,7 +73,7 @@ def iM(f, y0, T, N, flag=False):
 		 	  -> True  returns only the last point evaluated
 	"""
 	T= T *60*60*24    #changing the units of days to seconds for the interval
-	t,h =linspace(0, T, N+1, retstep=True)
+	t,h =linspace(T[0], T[1], N+1, retstep=True)
 	r=zeros(( 4 , size(t) ))
 	r[:, 0]= y0
 	for i in xrange(N):
@@ -88,7 +88,7 @@ def iM(f, y0, T, N, flag=False):
 def SV(y0, T, N, G=6.67300*1e-11, M=5.9722*1e24):
 	v0 = y0[2:4].copy()
 	y0 = y0[0:2].copy()
-
+	T = T * 60 * 60 * 24   # changing units from days to seconds just like above
 	d = size(y0)
 	t, h = linspace(T[0],T[1],N+1, retstep=True)
 
@@ -113,28 +113,30 @@ def Energy(y, m=10, G=6.67300*1e-11, M=5.9722*1e24):
 
 
 # starting value
-y0 = array([radius0,0,0,sqrt(con)])
-T = [0,5]  # Days to be evaluated
-N = 100 # Number of intervals to be evaluated
+y0 = array([ radius0, 0, 0, sqrt(con)])
+T = [0,5]  # Days to be evaluated  @@to be consitent with the above three programmes otherwise in the plot it is hard to see (ie: very short)
+N = 10000 # Number of intervals to be evaluated   @@more points to get rid of the discontinuity of the Energy gain and loss
 
 
 # implementing the functions 
 
 # explicit Euler
-t_EE, y_EE = eE(f, y0, T[1], N)
+t_EE, y_EE = eE(f, y0, T, N)
 # implicit Euler
-t_IE, y_IE = iE(f,y0,T[1],N)
+t_IE, y_IE = iE(f,y0,T,N)
 # implicit Midpoint 
-t_IM, y_IM = iM(f,y0,T[1],N)
-
+t_IM, y_IM = iM(f,y0,T,N)
+# Stroemer-Verlet
 t_SV, y_SV = SV(y0, T, N)
 
+#print Energy(y_SV)
 
 plt.figure()
 plt.plot(t_EE, Energy(y_EE)[2],'g-', label='total Energy EE')
 plt.plot(t_IE, Energy(y_IE)[2],'b-', label='total Energy IE')
-plt.plot(t_IM, Energy(y_IM)[2],'r-', label='total Energy IM')
-plt.plot(t_SV, Energy(y_SV)[2],'y-', label='total Energy SV')
+plt.plot(t_IM, Energy(y_IM)[2],'y-', label='total Energy IM')
+plt.plot(t_SV, Energy(y_SV)[2],'r-', label='total Energy SV')
+plt.title(r"Energy")
 plt.legend()
 plt.show()
 
