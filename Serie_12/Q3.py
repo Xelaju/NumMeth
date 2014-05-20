@@ -12,11 +12,10 @@ con=G * M / radius0
 
 
 #equations relating r, r' and r"
+# Mach keine Matrix multiplikation, ein Grauss fuer den Rechner O(n^2), besser ist folgendes:
 def f(x):
-	const= -G*M / (norm (x[:2]))**3
-	## !! why dont I have to seperate the force in r direction to the x,y direction with a cosine and sine 
-	A=array([[0,0, 1.,0], [0,0,0, 1.], [const, 0,0,0], [0, const , 0, 0]])
-	return dot( A, x)
+	dydt = hstack((y[2:4],-M*G/norm(y[0:2])**3 * y[0:2]))
+	return dydt
 
 
 #explicit Euler Method
