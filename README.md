@@ -1,7 +1,7 @@
 NumMeth
 =======
 
-Dieses Repository enthält gesammelte Programme zu Serien, Prüfungsaufgaben und Skript-Code der Numerik Vorlesung an der ETH FS14. Achtung: Es handelt sich in keinem Fall um Musterlösungen!
+Dieses Repository enthält (wird enthalten) gesammelte Programme zu Serien, Prüfungsaufgaben und Skript-Code der Numerik Vorlesung an der ETH FS14. Achtung: Es handelt sich in keinem Fall um Musterlösungen!
 
 Die gesammelten Programme dienen der Prüfungsvorbereitung, folgende Anmerkungen:
 - Die Lösungen der Serien sind keine Musterlösungen, sondern sollen laufend verbessert werden (zur Übung), 
