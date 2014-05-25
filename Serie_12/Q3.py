@@ -140,6 +140,13 @@ plt.title(r"Energy")
 plt.legend()
 plt.show()
 
+plt.figure()
+plt.plot(y_EE[0,:],y_EE[1,:])
+plt.plot(y_IE[0,:],y_IE[1,:])
+plt.plot(y_IM[0,:],y_IM[1,:])
+plt.plot(y_SV[0,:],y_SV[1,:])
+plt.show()
+
 
 
 
