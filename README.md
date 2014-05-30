@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-=======
-﻿
-﻿NumMeth
-=======
-NumMeth
-
-=======
-
->>>>>>> FETCH_HEAD
 Dieses Repository enthält (wird enthalten) gesammelte Programme zu Serien, Prüfungsaufgaben und Skript-Code der Numerik Vorlesung an der ETH FS14. Achtung: Es handelt sich in keinem Fall um Musterlösungen!
 
 Die gesammelten Programme dienen der Prüfungsvorbereitung, folgende Anmerkungen:
@@ -17,18 +7,5 @@ Die gesammelten Programme dienen der Prüfungsvorbereitung, folgende Anmerkungen
 - Bitte jeweils nur ein Programm für jede Aufgabe
 - Bitte bleibt konsistent bei der Ordnerstruktur und Programmbezeichnung
 
-<<<<<<< HEAD
+
 Viel Spaß und eine gute Prüfungsvorbereitung!
-=======
-Viel Spaß und eine gute Prüfungsvorberitung!
-
-
-
-Dies ist ein test
-ist dieser Satz nun bei euch angekommen?
-Bitte um rückmeldung lg
-=======
-
-
-
->>>>>>> FETCH_HEAD
