@@ -5,6 +5,12 @@ from numpy.linalg import lstsq, norm
 from matplotlib.pyplot import *
 from matplotlib.mlab import find
 
+""" 
+        DIESES TEMPLATE GIBT EINE FEHRLERMELDUNG
+        line 194
+        TypeError: norm() got an unexpected keyword argument 'axis'
+"""
+
 #Flughoehe der GPS-Satelliten
 rho = 26570*1e3
 # Erdradius
@@ -28,15 +34,24 @@ def gn(x, F, J, tol=1e-6, maxit=100):
     it    --- Iterationszaehler
     """    
 
-    ###############################################################
-    # Implementiere hier Nonlinear-Least-Squares via Gauss-Newton #
-    ###############################################################
-    xp = x
+    # Nonlinear-Least-Squares via Gauss-Newton
+
+    #@ Ich habe hier das "* 1.0" eingefuegt. Dann klappt auch das "xp -= s"
+    #@ weiter unten. Der Grund dafuer ist zugegebenermassen nicht gerade
+    #@ offensichtlich: Der Startwert x, den du aus dem Template bekommst, ist
+    #@ array([0, 0, 0, 0]), also ein Integer-Array. Wenn du dann xp -= s
+    #@ schreibst, ist das eine In-Place-Operation, es wird also der
+    #@ Speicherinhalt von xp ueberschrieben. Da es nun mal Integer-Werte sind,
+    #@ bleibt NumPy nichts anderes uebrig, als das Ergebnis von xp - s wieder in
+    #@ eine Ganzzahl umzuwandeln, auch wenn s ein Float-Vektor ist. Das fuehrt
+    #@ dann natuerlich dazu, dass dein Algorithmus nicht mehr richtig
+    #@ funktioniert. 
+
+    xp = x * 1.0
     ind = False
     for it in xrange(maxit):
         s = lstsq(J(xp),F(xp))[0]
-        s = squeeze(s) # Gibt es hier einen anderen Weg, das squeeze zu umgehen?
-        xp = xp - s    # Warum funktioniert xp -= s nicht?
+        xp -= s    # ohne die Aenderung oben funktioniert diese Schreibweise nicht.
         if norm(s) < tol * norm(xp):
             ind = True
             return xp, ind, it
@@ -50,9 +65,8 @@ def J(x, X):
     x --  [ tr, xr, yr, zr]
     X --  [ ts, xs, ys, zs]
     """
-    #####################################################
-    # Implementiere hier die Jacobi-Matrix der Funktion #
-    #####################################################
+    # Jacobi-Matrix der Funktion
+
     J = array([-2*c**2 * (x[0] - X[:,0]), 2*(x[1] - X[:,1]), 2*(x[2] - X[:,2]), 2*(x[3] - X[:,3])]).T
     return J
 
@@ -64,9 +78,8 @@ def F(x, X):
     x --  [ tr, xr, yr, zr]
     X --  [ ts, xs, ys, zs]
     """
-    ###########################################
-    # Implementiere hier den Residuenvektor F #
-    ###########################################
+    # Residuenvektor F
+
     F = array([-c**2 * (x[0] - X[:,0])**2 + (x[1] - X[:,1])**2 + (x[2] - X[:,2])**2 + (x[3] - X[:,3])**2]).T
     return F
 

@@ -28,7 +28,7 @@ figure()
 semilogy(e,Al,label=r"$A$")
 semilogy(e,ATAl,label=r"$A^TA$")
 semilogy(e,B1l,label=r"$B_1$")
-semilogy(e,Balphal,label=r"$B_\alpha$") # Ich bekomme eine Fehlermeldung, wenn ich $B_{\alpha}$ schreibe 
+semilogy(e,Balphal,label=r"$B_\alpha$")
 xlabel(r"$\varepsilon$")
 ylabel(r"Konditionszahl")
 title(r"Konditionszahl der Normalengleichung")

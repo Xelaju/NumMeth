@@ -14,18 +14,16 @@ def GR(a):
     r -- Matrix R
     """
 
-    #
-    # implementiere das Gram-Schmidt Verfahren hier  #
-    #
     a_sh = a.shape
     q = zeros((a_sh[0],a_sh[0]))
     r = zeros(a_sh)
     
     for j in xrange(a_sh[1]):
-        v = a[:,j]
+        # Wichtig ist in diesem Fall das copy()
+        v = a[:,j].copy()
         for i in xrange(j):
-            r[i,j] = dot(transpose(q[i,:]),v)
-            v = v - dot(r[i,j],q[i,:])
+            r[i,j] = dot(q[:,i],a[:,j])
+            v = v - r[i,j] * q[:,i]
         r[j,j] = norm(v)
         q[:,j] = v / r[j,j]
                 
@@ -43,21 +41,18 @@ def GRmod(a):
     r -- Matrix R
     """
 
-    #
-    # implementiere das modifizierte Gram-Schmidt Verfahren hier #
-    #
     a_sh = a.shape
     q = zeros((a_sh[0],a_sh[0]))
     r = zeros(a_sh)
     v = zeros(a_sh)
+
+    v = a.copy()
     for i in xrange(a_sh[0]):
-        v[i,:] = a[i,:]
-    for i in xrange(a_sh[0]):
-        r[i,i] = norm(v[i,:])
-        q[i,:] = v[i,:]/r[i,i]
+        r[i,i] = norm(v[:,i])
+        q[:,i] = v[:,i]/r[i,i]
         for j in xrange(i+1,a_sh[1]):
-            r[i,j] = dot(transpose(q[i,:]),v[:,j])
-            v[:,j] = v[:,j] - dot(r[i,j],q[i,:])
+            r[i,j] = dot(transpose(q[:,i]),v[:,j])
+            v[:,j] = v[:,j] - dot(r[i,j],q[:,i])
 
     return q, r
 
@@ -82,7 +77,7 @@ q2, r2 = GR(Z)
 q3, r3 = GRmod(Z)
 
 ## print statement
-print("numpys qr liefert:         %.10e" % (dot(q0, q0) - eye(n)).max())
-print("Gram-Schmidt liefert:      %.10e" % (dot(q2, q2) - eye(n)).max())
-print("mod. Gram-Schmidt liefert: %.10e" % (dot(q3, q3) - eye(n)).max())
+print("numpys qr liefert:         %.10e" % (dot(q0.T, q0) - eye(n)).max())
+print("Gram-Schmidt liefert:      %.10e" % (dot(q2.T, q2) - eye(n)).max())
+print("mod. Gram-Schmidt liefert: %.10e" % (dot(q3.T, q3) - eye(n)).max())
 

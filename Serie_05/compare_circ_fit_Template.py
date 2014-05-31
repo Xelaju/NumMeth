@@ -4,16 +4,15 @@ from numpy.linalg import solve, qr, inv, norm
 from numpy import random
 from scipy.optimize import leastsq
 from matplotlib import pyplot as plt
-from numpy import * # Darf ich in der Pruefung mehr verwenden als zunaechst eingebunden ist?
+from numpy import *
 
 
 def circ_linear_fit(x, y):
-    ######################################################
-    # Implementiere hier ein lineares Ausgleichsproblem  #
-    #                                                    #
-    # Input: x, y: Datenpunkte                           #
-    # Output: m1, m2, r: Mittelpunkt und Radius          #
-    ######################################################
+    """
+    Input: x, y: Datenpunkte
+    Output: m1, m2, r: Mittelpunkt und Radius
+    """
+
     m = shape(x)[0]
     A = ones((m,3))
     b = zeros(m)
@@ -25,7 +24,8 @@ def circ_linear_fit(x, y):
     U, s, VT = linalg.svd(A)
     r = sum(s > 1e-10)
 
-    return dot((VT.T)[:r, :], dot(U[:, :r].T, b) / s[:r]) 
+    sol = dot((VT.T)[:r, :], dot(U[:, :r].T, b) / s[:r])
+    return sol[0], sol[1], sqrt(sol[2] + sol[0]**2 + sol[1]**2)
 
 
 
@@ -73,14 +73,12 @@ def func(param, xdata, ydata):
 
 
 def circ_newton_fit(x, y, m1, m2, r):
-    ############################################################
-    # Implementiere hier ein nichtlineares Ausgleichsproblem   #
-    # und berechne die Loesung mit dem Newton Algorithmus.     #
-    #                                                          #
-    # Input: x, y: Datenpunkte                                 #
-    #        m1, m2, r: Startwerte fuer Mittelpunkt und Radius #
-    # Output: m1e, m2e, re: Mittelpunkt und Radius             #
-    ############################################################
+    """
+    Input: x, y: Datenpunkte
+           m1, m2, r: Startwerte fuer Mittelpunkt und Radius
+    Output: m1e, m2e, re: Mittelpunkt und Radius
+    """
+
     maxit = 10000
     tol = 1.e-5
     z = array([[m1],[m2],[r]])
@@ -96,14 +94,12 @@ def circ_newton_fit(x, y, m1, m2, r):
 
 
 def circ_gaussnewton_fit(x, y, m1, m2, r):
-    ##############################################################
-    # Implementiere hier ein nichtlineares Ausgleichsproblem     #
-    # und berechne die Loesung mit dem Gauss-Newton Algorithmus. #
-    #                                                            #
-    # Input: x, y: Datenpunkte                                   #
-    #        m1, m2, r: Startwerte fuer Mittelpunkt und Radius   #
-    # Output: m1e, m2e, re: Mittelpunkt und Radius               #
-    ##############################################################
+    """
+    Input: x, y: Datenpunkte
+           m1, m2, r: Startwerte fuer Mittelpunkt und Radius
+    Output: m1e, m2e, re: Mittelpunkt und Radius
+    """
+
     z = array([[m1],[m2],[r]])
     maxit = 10000
     tol = 1.e-5
@@ -118,14 +114,11 @@ def circ_gaussnewton_fit(x, y, m1, m2, r):
 
 
 def circ_scipy_least_squares_fit(x, y, m1, m2, r):
-    ##############################################################################
-    # Benutze hier die Funktion leastsq aus scipy.optimize                       #
-    # fuer das nichtlineare Ausgleichsproblem.                                   #
-    #                                                                            #
-    # Input: x,y: Datenpunkte                                                    #
-    #        m1, m2, r: Startwerte fuer Mittelpunkt und Radius                   #
-    # Output: m1e, m2e, re: Mittelpunkt und Radius                               #
-    ##############################################################################
+    """
+    Input: x,y: Datenpunkte
+           m1, m2, r: Startwerte fuer Mittelpunkt und Radius
+    Output: m1e, m2e, re: Mittelpunkt und Radius
+    """
 
     z = array([[m1],[m2],[r]])
     maxit = 10000
