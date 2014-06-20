@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from numpy import *
 from matplotlib.pyplot import *
 
@@ -16,27 +17,27 @@ def cc2(f, a, b, N):
     N    -- Anz. Punkte
     """
 
-    #################
-    # Dein Code ... #
-    #################
+    bma = 0.5 * (b - a)
+    x = cos( pi * arange(N+1).astype(double)/N ) # Chebychev - Abszissen x in [-1,1]
+    x *= bma 
+    x += 0.5 * (b + a)
 
-    #x = a + 0.5 * (b - a) * (cos(pi * (2 * arange(2 * N) + 1) / 2 * (2 * N)) + 1.) # Funktioniert relativ schlecht
-    #x = a + 0.5 * (b - a) * (cos(pi * (2 * arange(2 * N) + 1) / 2 * (2 * N+1)) + 1.) # Funktioniert merkwuerdigerweise exzellent fuer das erste Beispiel
-    x = a + 0.5 * (b - a) * (cos(pi * arange(N * 2) / (N * 2 - 1)) + 1.) # Funktioniert mehr oder minder gut
+    fx = f(x)
+    vx = hstack( (fx, fx[-2:0:-1]) )    # Für die Indexes siehe IndexesSlices.md
+                                        # Durch Spiegelung erhält man 2pi-Periodizität
+                                        # Achtung! Ränder nicht doppelt zählen
+    g = real(fft(vx)) * 0.5 / N         # Die Länge des Arrays beträgt 2N
+    A = zeros(N+1)
 
-    N = N.astype(int)
-    a = np.zeros((N))
-    if N%2 == 0:
-        z = np.fft.fft(f(x))/(2*N)        # Wir erhalten 2 * N Fourierkoeffizienten
-        temp = z[N+1:]          
-        a[1:] = (z[1:N] + temp[::-1]).real
-        a[0] = z[0].real            # Wir erhalten N Fourierkoeffizienten fuer a
+    A[1:N] = g[1:N] + flipud(g[N+1:])   # flipud() == g[-1:N:-1] kehrt das array um
 
-        f_int = 0.0
-        for k in xrange(N/2):
-            f_int += 2./(1 - (2*k)**2) * a[2*k]
-        return f_int
-    else: raise TypeError, 'odd_length'
+    A[[0,N]] = g[[0,N]]                 # Kurzschreibweise für A[0] = g[0] 
+                                        # und A[N] = g[N]
+    w = zeros_like(x)
+    w[::2] = 2./(1. - r_[:N+1:2]**2)    # r_[:N+1:2] == arange(0,N+1,2) == [0,2,4,...,N]
+                                        # Vorsicht! Jeder zweite Index von w ist 0
+    return dot(w,A) * bma               #@all Warum muss hier ein weiteres Mal skaliert werden?
+
 
 ns = arange(2, 10).astype(double)
 

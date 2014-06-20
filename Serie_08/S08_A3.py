@@ -11,7 +11,7 @@ def plot_coeffs(freqs, c):
 
 if __name__ == '__main__':
 
- 	f = lambda x: np.sin(x/200)**2 * np.exp(-((x-1000)/400)**2)
+ 	f = lambda x: np.sin((x/200)**2) * np.exp(-((x-1000)/400)**2)
 
 	s_rate = 2e5
 	x = np.linspace(0,2000,s_rate)

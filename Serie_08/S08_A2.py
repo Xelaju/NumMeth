@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	messdaten = x[1, :]
 
 	# Energiespektrum der Messdaten
-	power_2 = fft.fft(messdaten)**2
+	power_2 = abs(fft.fftshift(fft.fft(messdaten)**2))
 	# Frequenzen omega_k = k/T
 	freq = r_[-len(t) / 2:len(t) / 2] / T
 
